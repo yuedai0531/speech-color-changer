@@ -25,10 +25,14 @@ colors.forEach(function(v, i, a){
 });
 hints.innerHTML = 'Tap/click then say a color to change the background color of the app. Try ' + colorHTML + '.';
 
+var canvas = document.createElement('canvas');
+var stream = canvas.captureStream(25);
+var recorder = new MediaRecorder(stream);
+
 document.body.onclick = function() {
   recognition.start();
   console.log('Ready to receive a color command.');
-  var recorder = new MediaRecorder(stream);
+
   console.log('Recording started');
   // recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
   // console.log('2');
@@ -42,8 +46,7 @@ document.body.onclick = function() {
   recorder.start();
 }
 
-var canvas = document.createElement('canvas');
-var stream = canvas.captureStream(25);
+
 
 recognition.onresult = function(event) {
   // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
@@ -87,7 +90,6 @@ recognition.onspeechend = function() {
   clipContainer.appendChild(audio);
   clipContainer.appendChild(clipLabel);
   clipContainer.appendChild(deleteButton);
-  soundClips.appendChild(clipContainer);
 
   blob = new Blob(chunks, { 'type' : 'audio/mp3' });
   // chunks = [];
